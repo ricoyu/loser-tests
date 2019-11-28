@@ -1,6 +1,6 @@
 package com.loserico.jmm;
 
-import com.loserico.jmm.util.UnsafeInstance;
+import com.loserico.jmm.util.UnsafeInstanceTest;
 
 /**
  * 指令重排
@@ -33,13 +33,13 @@ public class VolatileReorderSample3 {
 				a = 1; //step1  这是写 store
 				//storeload读写屏障, 不允许volatile写与第二步volatile读发生重排
 				//手动加内存屏障
-				UnsafeInstance.reflectGetUnsafe().storeFence();
+				UnsafeInstanceTest.reflectGetUnsafe().storeFence();
 				x = b; //step2  这是先读后写(先读volatile变量b, 再写普通变量x)
 			});
 			
 			Thread t2 = new Thread(() -> {
 				b = 1; //step3
-				UnsafeInstance.reflectGetUnsafe().storeFence();
+				UnsafeInstanceTest.reflectGetUnsafe().storeFence();
 				y = a; //step4
 			});
 			

@@ -16,9 +16,9 @@ import java.lang.reflect.Field;
  * @version 1.0
  */
 @Slf4j
-public final class UnsafeInstance {
+public final class UnsafeInstanceTest {
 	
-	private UnsafeInstance() {
+	private UnsafeInstanceTest() {
 	}
 	
 	/**

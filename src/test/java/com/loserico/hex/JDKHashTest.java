@@ -1,10 +1,10 @@
-package com.loserico;
+package com.loserico.hex;
+
+import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.junit.Test;
 
 public class JDKHashTest {
 
@@ -29,4 +29,12 @@ public class JDKHashTest {
 	    }
 	    System.out.println(hexString.toString());
 	}
+	
+	@Test
+	public void testHashCode() {
+		String s = "a";
+		System.out.println(s.hashCode());
+		System.out.println(s.hashCode() >>> 16);
+	}
+	
 }
