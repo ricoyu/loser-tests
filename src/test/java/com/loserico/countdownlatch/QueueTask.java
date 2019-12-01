@@ -2,13 +2,6 @@ package com.loserico.countdownlatch;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * @author ：图灵-杨过
- * @date：2019/7/11
- * @version: V1.0
- * @slogan: 天下风云出我辈，一入代码岁月催
- * @description :
- */
 public class QueueTask implements Runnable {
 
     private CountDownLatch countDownLatch;

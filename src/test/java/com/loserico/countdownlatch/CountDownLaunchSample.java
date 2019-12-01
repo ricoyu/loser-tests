@@ -2,12 +2,6 @@ package com.loserico.countdownlatch;
 
 import java.util.concurrent.CountDownLatch;
 
-/**
- * @author ：图灵-杨过
- * @date：2019/7/4
- * @version: V1.0
- * @slogan:天下风云出我辈，一入代码岁月催 description：
- */
 public class CountDownLaunchSample {
 
     public static void main(String[] args) throws InterruptedException {

@@ -780,7 +780,7 @@ public class HashMap<K, V> extends AbstractMap<K, V>
                              *
                              * 通过 e.hash & oldCap 的方式可以得知 hash 在 oldCap 1对应的位置是否为0或1
                              * -------------------------
-                             * 这处设计相当巧妙与难以理解 ;(
+                             * 这处设计相当巧妙且难以理解 ;(
                              * 
                              */
 							if ((e.hash & oldCap) == 0) { // == 0 表示迁移到新数组后index不变

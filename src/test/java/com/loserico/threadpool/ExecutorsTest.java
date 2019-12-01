@@ -5,11 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author ：图灵-杨过
- * @date：2019/7/15
- * @version: V1.0
- * @slogan: 天下风云出我辈，一入代码岁月催
- * @description :
+ * 线程池测试
  */
 public class ExecutorsTest {
 
