@@ -47,4 +47,13 @@ public class BinaryTest {
 		a &= b;
 		System.out.println("a = " + a);
 	}
+	
+	@Test
+	public void test() {
+		int countBits = Integer.SIZE - 3;
+		int running = -1 << countBits;
+		System.out.println(Integer.toBinaryString(-1));
+		System.out.println(Integer.toBinaryString(running));
+		System.out.println(Integer.toBinaryString(-3));
+	}
 }
