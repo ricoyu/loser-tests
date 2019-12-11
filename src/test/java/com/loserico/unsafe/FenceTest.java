@@ -1,6 +1,6 @@
 package com.loserico.unsafe;
 
-import com.loserico.common.lang.concurrent.UnsafeInstance;
+import com.loserico.common.lang.magic.UnsafeInstance;
 import sun.misc.Unsafe;
 
 /**

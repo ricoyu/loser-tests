@@ -510,6 +510,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		
 		protected boolean tryRelease(int unused) {
 			setExclusiveOwnerThread(null);
+			/*
+			 * 在interruptIdleWorkers()方法会去调用Worker.tryLock()
+			 * 里面会用compareAndSetState(0, 1)获取锁, 如果这里不设为0的话, 那边加锁是不可能成功的
+			 */
 			setState(0);
 			return true;
 		}
@@ -939,6 +943,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		final ReentrantLock mainLock = this.mainLock;
 		mainLock.lock();
 		try {
+			/*
+			 * 线程终结时, 收集线程一共处理了多少任务
+			 */
 			completedTaskCount += w.completedTasks;
 			workers.remove(w);
 		} finally {
@@ -948,17 +955,17 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		tryTerminate();
 		
 		int c = ctl.get();
-		if (runStateLessThan(c, STOP)) {
+		if (runStateLessThan(c, STOP)) {//如果是RUNNING或者SHUTDOWN状态
 			if (!completedAbruptly) {
 				int min = allowCoreThreadTimeOut ? 0 : corePoolSize;
-				if (min == 0 && !workQueue.isEmpty()) {
+				if (min == 0 && !workQueue.isEmpty()) { //workQueue中还有任务没有做完
 					min = 1;
 				}
 				if (workerCountOf(c) >= min) {
 					return; // replacement not needed
 				}
 			}
-			addWorker(null, false);
+			addWorker(null, false); //添加一个Worker把任务做完
 		}
 	}
 	
@@ -1009,8 +1016,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			 * Are workers subject to culling?
 			 * timed变量用于判断是否需要进行超时控制
 			 * 
-			 * allowCoreThreadTimeOut默认是false, 也就是核心线程不允许进行超时
+			 * allowCoreThreadTimeOut
+			 * 默认是false, 也就是核心线程不允许进行超时; 如果允许超时, 一旦超时后, 核心线程与非核心线程都会结束生命周期
 			 * wc > corePoolSize, 表示当前线程池中的线程数量大于核心线程数量; 对于超过核心线程数量的这些线程, 需要进行超时控制
+			 * 
+			 * 在创建ThreadPoolExecutor时候, 会传一个参数keepAliveTime, 如果这个参数是0并且允许核心线程超时, 那么一旦阻塞队列
+			 * 是空的, 那么核心线程和非核心线程都会停掉
 			 */
 			boolean timed = allowCoreThreadTimeOut || wc > corePoolSize;
 			/*
@@ -1022,7 +1033,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			 */
 			if ((wc > maximumPoolSize || (timed && timedOut))
 					&& (wc > 1 || workQueue.isEmpty())) {
-				if (compareAndDecrementWorkerCount(c)) {
+				if (compareAndDecrementWorkerCount(c)) { // 线程数减1
 					return null;
 				}
 				continue;
@@ -1032,6 +1043,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 				/*
 				 * 根据timed来判断, 如果为true, 则通过阻塞队列的poll方法进行超时控制, 如果在keepAliveTime时间内没有获取到任务, 则返回null;
 				 * 否则通过take方法, 如果这时队列为空, 则take方法会阻塞直到队列不为空。
+				 * 
+				 * 这里就是实现线程超时控制的代码
+				 * workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) 会阻塞keepAliveTime, 如果超时了没用元素则返回null
+				 * 如果拿到的Runnable是null, 那么timedOut就是true; 
+				 * 然后在下一轮循环的时候就会执行compareAndDecrementWorkerCount(c), 并且返回null
+				 * 然后在runWorker()调用getTask()的地方, 会判断 getTask() != null, 否则就跳出while循环, 循环结束了线程池中这个线程也就停掉了
 				 */
 				Runnable r = timed ?
 						workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
@@ -1113,7 +1130,21 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		// 是否因为异常退出循环
 		boolean completedAbruptly = true;
 		try {
-			// 如果task为空，则通过getTask来获取任务
+			/*
+			 * 如果task为空，则通过getTask来获取任务
+			 * 
+			 * w.firstTask是在ThreadPoolExecutor.execute方法中添加的, 
+			 * 如: addWorker(command, true) 添加Worker的时候就带初始任务
+			 * 
+			 * 如果是第一次循环, task != null就表示Worker带初始任务的, 先执行; 
+			 * 如果不带初始任务, 就从阻塞队列中取
+			 * 
+			 * 从第二次循环开始都是从阻塞队列取任务, 如果没有任务的话线程阻塞, 
+			 * 线程池中的线程为什么可以一直存活的原因就在这里
+			 * 
+			 * 当然, 如果运行线程超时, 那么getTask()会阻塞keepAliveTime, 然后返回null, 这时候这里就跳出while循环
+			 * 线程结束
+			 */
 			while (task != null || (task = getTask()) != null) {
 				/*
 				 * 这又lock一遍, 将state设为1, exclusiveOwnerThread设为当前线程
@@ -1390,7 +1421,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			 *
 			 * command就是实现了Runnable接口的类, 也就是你要交给线程池去执行的任务
 			 */
-			if (addWorker(command, true)) {
+			if (addWorker(command, true)) { //这里的command就是Worker的初始任务, 即Worker类的Runnable firstTask
 				return;
 			}
 			//如果添加失败，则重新获取ctl值
