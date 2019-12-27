@@ -138,7 +138,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * 当所有的任务已终止, ctl记录的 "任务数量" 为0, 线程池会变为TIDYING状态.
 	 * 当线程池变为TIDYING状态时, 会执行钩子函数terminated(). terminated()在ThreadPoolExecutor类中是空的,
 	 * 若用户想在线程池变为TIDYING时, 进行相应的处理, 可以通过重载terminated()函数来实现.
-	 * 
+	 *
 	 * 状态切换: 当线程池在SHUTDOWN状态下, 阻塞队列为空并且线程池中执行的任务也为空时, 就会由 SHUTDOWN -> TIDYING.
 	 * 当线程池在STOP状态下, 线程池中执行的任务为空时, 就会由STOP -> TIDYING
 	 */
@@ -251,7 +251,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * 1: ArrayBlockingQueue  基于数组结构的有界阻塞队列, 按FIFO排序任务
 	 * 2: LinkedBlockingQuene 基于链表结构的阻塞队列, 按FIFO排序任务, 吞吐量通常要高于ArrayBlockingQuene
 	 * 3: SynchronousQueue    一个不存储元素的阻塞队列, 每个插入操作必须等到另一个线程调用移除操作,
-	 * 否则插入操作一直处于阻塞状态, 吞吐量通常要高于LinkedBlockingQuene
+	 *                        否则插入操作一直处于阻塞状态, 吞吐量通常要高于LinkedBlockingQuene
 	 * 4: PriorityBlockingQueue 具有优先级的无界阻塞队列
 	 */
 	private final BlockingQueue<Runnable> workQueue;
@@ -418,13 +418,13 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * the thread actually starts running tasks, we initialize lock
 	 * state to a negative value, and clear it upon start (in
 	 * runWorker).
-	 * 
+	 *
 	 * 线程池中的每一个线程被封装成一个Worker对象，ThreadPool维护的其实就是一组Worker对象
-	 * 
+	 *
 	 * Worker类继承了AQS, 并实现了Runnable接口, 注意其中的firstTask和thread属性: 
 	 *   firstTask用它来保存传入的任务
 	 *   thread是在调用构造方法时通过ThreadFactory来创建的线程, 是用来处理任务的线程
-	 *   
+	 *
 	 * Worker使用AQS来实现独占锁的功能. 为什么不使用ReentrantLock来实现呢？可以看到tryAcquire方法, 
 	 * 它是不允许重入的, 而ReentrantLock是允许重入的: 
 	 * 1: lock方法一旦获取了独占锁, 表示当前线程正在执行任务中
@@ -434,7 +434,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 *    interruptIdleWorkers方法会使用tryLock方法来判断线程池中的线程是否是空闲状态
 	 * 5: 之所以设置为不可重入, 是因为我们不希望任务在调用像setCorePoolSize这样的线程池控制方法时重新获取锁. 
 	 *    如果使用ReentrantLock, 它是可重入的, 这样如果在任务中调用了如setCorePoolSize这类线程池控制的方法, 会中断正在运行的线程
-	 *    
+	 *
 	 * 所以, Worker继承自AQS, 用于判断线程是否空闲以及是否可以被中断
 	 */
 	private final class Worker extends AbstractQueuedSynchronizer implements Runnable {
@@ -459,22 +459,22 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		
 		/**
 		 * Creates with given first task and thread from ThreadFactory.
-		 * 
+		 *
 		 * 在调用构造方法时, 需要把任务传入, 这里通过 getThreadFactory().newThread(this); 来新建一个线程. 
 		 * newThread方法传入的参数是this, 因为Worker本身继承了Runnable接口, 也就是一个线程, 
 		 * 所以一个Worker对象在启动的时候会调用Worker类中的run方法。
-		 * 
+		 *
 		 * 正因为如此, 在runWorker方法中会先调用Worker对象的unlock方法将state设置为0
-		 * 
+		 *
 		 * @param firstTask the first task (null if none)
 		 */
 		Worker(Runnable firstTask) {
 			/*
 			 * 把state变量设置为-1, 为什么这么做呢? 是因为AQS中默认的state是0, 如果刚创建了一个Worker对象,
 			 * 还没有执行任务时, 这时就不应该被中断, 看一下tryAquire方法.
-			 * ryAcquire方法是根据state是否是0来判断的, 所以, setState(-1); 
+			 * ryAcquire方法是根据state是否是0来判断的, 所以, setState(-1);
 			 * 将state设置为-1是为了禁止在执行任务前对线程进行中断
-			 * 
+			 *
 			 * 其实就表示这个Worker还没有执行过任何任务, 有点还不完全初始化完成得意思
 			 */
 			setState(-1); // inhibit interrupts until runWorker
@@ -765,10 +765,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * firstTask 用于指定新增的线程执行的第一个任务
 	 * core      true 表示在新增线程时会判断当前活动线程数是否少于corePoolSize
 	 *           false表示新增线程前需要判断当前活动线程数是否少于maximumPoolSize
-	 *           
+	 *
 	 * Checks if a new worker can be added with respect to current
 	 * pool state and the given bound (either core or maximum). 
-	 * 
+	 *
 	 * If so, the worker count is adjusted accordingly, and, if possible, 
 	 * a new worker is created and started, running firstTask as its first task. 
 	 * This method returns false if the pool is stopped or eligible to shut down. 
@@ -866,7 +866,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 					int rs = runStateOf(ctl.get());
 					/*
 					 * rs < SHUTDOWN 表示是RUNNING状态
-					 * 如果rs是RUNNING状态或者rs是SHUTDOWN状态并且firstTask为null, 向线程池中添加线程, 
+					 * 如果rs是RUNNING状态或者rs是SHUTDOWN状态并且firstTask为null, 向线程池中添加线程,
 					 * 因为在SHUTDOWN时不会在添加新的任务, 但还是会执行workQueue中的任务
 					 */
 					if (rs < SHUTDOWN ||
@@ -984,7 +984,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * non-empty, this worker is not the last thread in the pool.
 	 *
 	 * getTask方法用来从阻塞队列中取任务
-	 * 
+	 *
 	 * @return task, or null if the worker must exit, in which case
 	 * workerCount is decremented
 	 */
@@ -998,10 +998,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			
 			/*
 			 * Check if queue empty only if necessary.
-			 * 如果线程池状态 rs >= SHUTDOWN, 也就是非RUNNING状态, 再进行以下判断: 
+			 * 如果线程池状态 rs >= SHUTDOWN, 也就是非RUNNING状态, 再进行以下判断:
 			 * 1: rs >= STOP, 线程池是否正在stop
 			 * 2: 阻塞队列是否为空
-			 * 
+			 *
 			 * 如果以上条件满足, 则将workerCount减1并返回null
 			 * 因为如果当前线程池状态的值是SHUTDOWN或以上时, 不允许再向阻塞队列中添加任务
 			 */
@@ -1015,11 +1015,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 			/*
 			 * Are workers subject to culling?
 			 * timed变量用于判断是否需要进行超时控制
-			 * 
+			 *
 			 * allowCoreThreadTimeOut
 			 * 默认是false, 也就是核心线程不允许进行超时; 如果允许超时, 一旦超时后, 核心线程与非核心线程都会结束生命周期
 			 * wc > corePoolSize, 表示当前线程池中的线程数量大于核心线程数量; 对于超过核心线程数量的这些线程, 需要进行超时控制
-			 * 
+			 *
 			 * 在创建ThreadPoolExecutor时候, 会传一个参数keepAliveTime, 如果这个参数是0并且允许核心线程超时, 那么一旦阻塞队列
 			 * 是空的, 那么核心线程和非核心线程都会停掉
 			 */
@@ -1043,10 +1043,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 				/*
 				 * 根据timed来判断, 如果为true, 则通过阻塞队列的poll方法进行超时控制, 如果在keepAliveTime时间内没有获取到任务, 则返回null;
 				 * 否则通过take方法, 如果这时队列为空, 则take方法会阻塞直到队列不为空。
-				 * 
+				 *
 				 * 这里就是实现线程超时控制的代码
 				 * workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) 会阻塞keepAliveTime, 如果超时了没用元素则返回null
-				 * 如果拿到的Runnable是null, 那么timedOut就是true; 
+				 * 如果拿到的Runnable是null, 那么timedOut就是true;
 				 * 然后在下一轮循环的时候就会执行compareAndDecrementWorkerCount(c), 并且返回null
 				 * 然后在runWorker()调用getTask()的地方, 会判断 getTask() != null, 否则就跳出while循环, 循环结束了线程池中这个线程也就停掉了
 				 */
@@ -1105,7 +1105,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * and the thread's UncaughtExceptionHandler have as accurate
 	 * information as we can provide about any problems encountered by
 	 * user code.
-	 * 
+	 *
 	 * 在Worker类中的run方法调用了runWorker方法来执行任务
 	 * 总结一下runWorker方法的执行过程:
 	 * 1: while循环不断地通过getTask()方法获取任务
@@ -1132,16 +1132,16 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		try {
 			/*
 			 * 如果task为空，则通过getTask来获取任务
-			 * 
-			 * w.firstTask是在ThreadPoolExecutor.execute方法中添加的, 
+			 *
+			 * w.firstTask是在ThreadPoolExecutor.execute方法中添加的,
 			 * 如: addWorker(command, true) 添加Worker的时候就带初始任务
-			 * 
-			 * 如果是第一次循环, task != null就表示Worker带初始任务的, 先执行; 
+			 *
+			 * 如果是第一次循环, task != null就表示Worker带初始任务的, 先执行;
 			 * 如果不带初始任务, 就从阻塞队列中取
-			 * 
-			 * 从第二次循环开始都是从阻塞队列取任务, 如果没有任务的话线程阻塞, 
+			 *
+			 * 从第二次循环开始都是从阻塞队列取任务, 如果没有任务的话线程阻塞,
 			 * 线程池中的线程为什么可以一直存活的原因就在这里
-			 * 
+			 *
 			 * 当然, 如果运行线程超时, 那么getTask()会阻塞keepAliveTime, 然后返回null, 这时候这里就跳出while循环
 			 * 线程结束
 			 */
@@ -1152,16 +1152,16 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 				w.lock();
 				/*
 				 * If pool is stopping, ensure thread is interrupted;
-				 * if not, ensure thread is not interrupted.  
+				 * if not, ensure thread is not interrupted.
 				 * This requires a recheck in second case to deal with shutdownNow race while clearing interrupt
 				 * 这个if的目的是
 				 * 1: 如果线程池正在停止, 那么要保证当前线程是中断状态
 				 * 2: 如果不是的话, 则要保证当前线程不是中断状态
-				 * 
-				 * 这里要考虑在执行该if语句期间可能也执行了shutdownNow方法, shutdownNow方法会把状态设置为STOP, 回顾一下STOP状态: 
-				 * 不能接受新任务, 也不处理队列中的任务, 会中断正在处理任务的线程. 
+				 *
+				 * 这里要考虑在执行该if语句期间可能也执行了shutdownNow方法, shutdownNow方法会把状态设置为STOP, 回顾一下STOP状态:
+				 * 不能接受新任务, 也不处理队列中的任务, 会中断正在处理任务的线程.
 				 * 在线程池处于RUNNING 或 SHUTDOWN 状态时, 调用 shutdownNow() 方法会使线程池进入到该状态
-				 * 
+				 *
 				 * STOP状态要中断线程池中的所有线程, 而这里使用Thread.interrupted()来判断是否中断是为了确保
 				 * 在RUNNING 或者SHUTDOWN 状态时线程是非中断状态的, 因为Thread.interrupted()方法会复位中断的状态。
 				 */
@@ -1235,10 +1235,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 * @throws NullPointerException     if {@code workQueue} is null
 	 */
 	public ThreadPoolExecutor(int corePoolSize,
-							  int maximumPoolSize,
-							  long keepAliveTime,
-							  TimeUnit unit,
-							  BlockingQueue<Runnable> workQueue) {
+	                          int maximumPoolSize,
+	                          long keepAliveTime,
+	                          TimeUnit unit,
+	                          BlockingQueue<Runnable> workQueue) {
 		this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
 				Executors.defaultThreadFactory(), defaultHandler);
 	}
@@ -1269,11 +1269,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 *                                  or {@code threadFactory} is null
 	 */
 	public ThreadPoolExecutor(int corePoolSize,
-							  int maximumPoolSize,
-							  long keepAliveTime,
-							  TimeUnit unit,
-							  BlockingQueue<Runnable> workQueue,
-							  ThreadFactory threadFactory) {
+	                          int maximumPoolSize,
+	                          long keepAliveTime,
+	                          TimeUnit unit,
+	                          BlockingQueue<Runnable> workQueue,
+	                          ThreadFactory threadFactory) {
 		this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
 				threadFactory, defaultHandler);
 	}
@@ -1304,11 +1304,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 *                                  or {@code handler} is null
 	 */
 	public ThreadPoolExecutor(int corePoolSize,
-							  int maximumPoolSize,
-							  long keepAliveTime,
-							  TimeUnit unit,
-							  BlockingQueue<Runnable> workQueue,
-							  RejectedExecutionHandler handler) {
+	                          int maximumPoolSize,
+	                          long keepAliveTime,
+	                          TimeUnit unit,
+	                          BlockingQueue<Runnable> workQueue,
+	                          RejectedExecutionHandler handler) {
 		this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue,
 				Executors.defaultThreadFactory(), handler);
 	}
@@ -1341,12 +1341,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 	 *                                  or {@code threadFactory} or {@code handler} is null
 	 */
 	public ThreadPoolExecutor(int corePoolSize,
-							  int maximumPoolSize,
-							  long keepAliveTime,
-							  TimeUnit unit,
-							  BlockingQueue<Runnable> workQueue,
-							  ThreadFactory threadFactory,
-							  RejectedExecutionHandler handler) {
+	                          int maximumPoolSize,
+	                          long keepAliveTime,
+	                          TimeUnit unit,
+	                          BlockingQueue<Runnable> workQueue,
+	                          ThreadFactory threadFactory,
+	                          RejectedExecutionHandler handler) {
 		if (corePoolSize < 0 ||
 				maximumPoolSize <= 0 ||
 				maximumPoolSize < corePoolSize ||
