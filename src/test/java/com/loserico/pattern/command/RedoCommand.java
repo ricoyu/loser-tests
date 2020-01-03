@@ -11,7 +11,7 @@ public class RedoCommand implements Command {
 
 	/**
 	* 构造方法
-	* @param document
+	* @param documentReceiver
 	*/
 	public RedoCommand(DocumentReceiver documentReceiver) {
 		this.documentReceiver = documentReceiver;

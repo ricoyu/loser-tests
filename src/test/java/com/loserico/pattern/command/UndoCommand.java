@@ -11,7 +11,7 @@ public class UndoCommand implements Command {
 
 	/**
 	* 构造方法
-	* @param document
+	* @param documentReceiver
 	*/
 	public UndoCommand(DocumentReceiver documentReceiver) {
 		this.documentReceiver = documentReceiver;

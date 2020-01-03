@@ -15,8 +15,8 @@ public class Invoker {
 	* 命令设置方法
 	* @param command
 	*/
-	public void setCommand(Command cmd) {
-		this.command = cmd;
+	public void setCommand(Command command) {
+		this.command = command;
 	}
 
 	/**

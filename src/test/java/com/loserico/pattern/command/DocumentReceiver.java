@@ -3,7 +3,7 @@ package com.loserico.pattern.command;
 /**
  * 命令接收者 Receiver
  */
-public class DocumentReceiver {
+public class DocumentReceiver extends CommandClient {
 	/**
 	 * 操作实体对象
 	 */
