@@ -1,8 +1,7 @@
 package com.loserico.utils;
 
+import com.loserico.common.lang.utils.MathUtils;
 import org.junit.Test;
-
-import com.loserico.commons.utils.MathUtils;
 
 public class MathUtilsTest {
 

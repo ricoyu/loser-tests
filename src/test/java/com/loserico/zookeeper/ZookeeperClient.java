@@ -1,12 +1,10 @@
 package com.loserico.zookeeper;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Collections.emptyList;
-
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.concurrent.CountDownLatch;
-
+import com.loserico.zookeeper.callback.ConnectCallback;
+import com.loserico.zookeeper.exception.ZookeeperException;
+import com.loserico.zookeeper.utils.PathUtils;
+import com.loserico.zookeeper.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.KeeperException.NoNodeException;
@@ -17,13 +15,12 @@ import org.apache.zookeeper.ZooDefs.Ids;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 
-import com.loserico.commons.unmarshal.Unmarshaller;
-import com.loserico.zookeeper.callback.ConnectCallback;
-import com.loserico.zookeeper.exception.ZookeeperException;
-import com.loserico.zookeeper.utils.PathUtils;
-import com.loserico.zookeeper.utils.StringUtils;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.concurrent.CountDownLatch;
 
-import lombok.extern.slf4j.Slf4j;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Collections.emptyList;
 
 /**
  * 
@@ -130,7 +127,6 @@ public class ZookeeperClient {
 	/**
 	 * 创建持久节点, 父节点不存在的话自动创建(父节点都是PERSISTENT)
 	 * @param nodePath
-	 * @param nodeValue
 	 * @return String 创建的节点的完整路径名
 	 * @on
 	 */
@@ -141,9 +137,7 @@ public class ZookeeperClient {
 	/**
 	 * 创建临时节点, 父节点不存在的话自动创建(父节点都是PERSISTENT)
 	 * 
-	 * @param zk
 	 * @param nodePath
-	 * @param value
 	 * @return String 创建的节点的完整路径名
 	 * @on
 	 */
@@ -154,9 +148,7 @@ public class ZookeeperClient {
 	/**
 	 * 创建临时节点, 父节点不存在的话自动创建(父节点都是PERSISTENT)
 	 * 
-	 * @param zk
 	 * @param nodePath
-	 * @param value
 	 * @return String 创建的节点的完整路径名
 	 * @on
 	 */
@@ -234,7 +226,8 @@ public class ZookeeperClient {
 	public String getStr(String path, boolean watch) {
 		try {
 			byte[] data = zk.getData(path, watch, new Stat());
-			return Unmarshaller.toString(data);
+			//return com.loserico.cache.utils.UnMarshaller.toString(data);
+			return "";
 		} catch (KeeperException | InterruptedException e) {
 			if (e instanceof NoNodeException) {
 				log.info("不存在节点{}", path);
@@ -261,7 +254,8 @@ public class ZookeeperClient {
 				getData(path, watcher);
 				watcher.process(event);
 			}, new Stat());
-			return Unmarshaller.toString(data);
+			//return Unmarshaller.toString(data);
+			return "";
 		} catch (KeeperException | InterruptedException e) {
 			if (e instanceof NoNodeException) {
 				log.info("不存在节点{}", path);
@@ -282,7 +276,8 @@ public class ZookeeperClient {
 	public Integer getInteger(String path, boolean watch) {
 		try {
 			byte[] data = zk.getData(path, watch, new Stat());
-			return Unmarshaller.toInteger(data);
+			//return Unmarshaller.toInteger(data);
+			return 0;
 		} catch (KeeperException | InterruptedException e) {
 			if (e instanceof NoNodeException) {
 				log.info("不存在节点{}", path);
@@ -303,7 +298,8 @@ public class ZookeeperClient {
 	public Long getLong(String path, boolean watch) {
 		try {
 			byte[] data = zk.getData(path, watch, new Stat());
-			return Unmarshaller.toLong(data);
+			//return Unmarshaller.toLong(data);
+			return 1L;
 		} catch (KeeperException | InterruptedException e) {
 			if (e instanceof NoNodeException) {
 				log.info("不存在节点{}", path);
@@ -326,7 +322,8 @@ public class ZookeeperClient {
 	public <T> T getData(String path, boolean watch, Class<T> clazz) {
 		try {
 			byte[] data = zk.getData(path, watch, new Stat());
-			return Unmarshaller.toObject(data, clazz);
+			//return Unmarshaller.toObject(data, clazz);
+			return null;
 		} catch (KeeperException | InterruptedException e) {
 			if (e instanceof NoNodeException) {
 				log.info("不存在节点{}", path);

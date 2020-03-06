@@ -1,10 +1,9 @@
 package com.loserico.reflection;
 
-import java.lang.reflect.Field;
-
+import com.loserico.common.lang.utils.ReflectionUtils;
 import org.junit.Test;
 
-import com.loserico.commons.utils.ReflectionUtils;
+import java.lang.reflect.Field;
 
 public class ReflectionTest {
 

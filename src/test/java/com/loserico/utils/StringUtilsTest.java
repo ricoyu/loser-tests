@@ -1,12 +1,11 @@
 package com.loserico.utils;
 
-import static java.util.Arrays.asList;
+import com.loserico.common.lang.utils.StringUtils;
+import org.junit.Test;
 
 import java.util.List;
 
-import org.junit.Test;
-
-import com.loserico.commons.utils.StringUtils;
+import static java.util.Arrays.asList;
 
 public class StringUtilsTest {
 

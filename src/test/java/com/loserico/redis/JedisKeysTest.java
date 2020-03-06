@@ -1,9 +1,11 @@
 package com.loserico.redis;
 
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
-import static java.util.stream.Collectors.counting;
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toSet;
+import com.loserico.common.lang.utils.StringUtils;
+import com.loserico.json.jackson.JacksonUtils;
+import org.junit.Test;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisSentinelPool;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,13 +13,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import org.junit.Test;
-
-import com.loserico.commons.utils.StringUtils;
-
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisSentinelPool;
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toSet;
 
 public class JedisKeysTest {
 
@@ -48,6 +46,6 @@ public class JedisKeysTest {
 		List<String> platforms = jedis.mget(platformKeys.stream().toArray(String[]::new));
 		platforms.forEach(System.out::println);
 		Map<String, Long> result = platforms.stream().collect(groupingBy(Function.identity(), counting()));
-		System.out.println(toJson(result));
+		System.out.println(JacksonUtils.toJson(result));
 	}
 }

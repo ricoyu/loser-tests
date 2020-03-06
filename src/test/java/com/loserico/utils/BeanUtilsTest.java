@@ -1,13 +1,9 @@
 package com.loserico.utils;
 
-import static com.alibaba.fastjson.serializer.SerializerFeature.WRITE_MAP_NULL_FEATURES;
-
-import java.time.LocalDateTime;
-
+import com.loserico.common.lang.utils.BeanUtils;
 import org.junit.Test;
 
-import com.alibaba.fastjson.JSON;
-import com.loserico.commons.utils.BeanUtils;
+import java.time.LocalDateTime;
 
 public class BeanUtilsTest {
 
@@ -58,7 +54,6 @@ public class BeanUtilsTest {
 		source.setName("rico");
 		User target = new User();
 		BeanUtils.copyProperties(source, target);
-		System.out.println(JSON.toJSONString(target, WRITE_MAP_NULL_FEATURES));
 	}
 	
 	@Test
@@ -76,7 +71,5 @@ public class BeanUtilsTest {
 //		BeanUtils.copyProperties(source, target, true);
 		BeanUtils.copyProperties(source, target, "age", "birthday");
 //		copyProperties(source, target, ignoreNull)
-		System.out.println(JSON.toJSONString(source, WRITE_MAP_NULL_FEATURES));
-		System.out.println(JSON.toJSONString(target, WRITE_MAP_NULL_FEATURES));
 	}
 }

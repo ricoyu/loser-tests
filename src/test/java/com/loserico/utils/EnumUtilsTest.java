@@ -1,8 +1,8 @@
 package com.loserico.utils;
-import org.junit.Test;
 
-import com.loserico.commons.utils.EnumUtils;
-import com.loserico.commons.utils.ReflectionUtils;
+import com.loserico.common.lang.utils.EnumUtils;
+import com.loserico.common.lang.utils.ReflectionUtils;
+import org.junit.Test;
 
 public class EnumUtilsTest {
 

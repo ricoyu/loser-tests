@@ -1,13 +1,11 @@
 package com.loserico.redis;
 
-import static org.junit.Assert.assertEquals;
-
+import com.loserico.common.lang.utils.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.loserico.io.utils.IOUtils;
-
 import redis.clients.jedis.Jedis;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * EVAL 语法
@@ -35,7 +33,7 @@ public class RedisLuaTest {
 
 	@Test
 	public void testLua1() {
-		String script = IOUtils.readClassPathFile("hello-lua.lua");
+		String script = IOUtils.readClassPathFileAsString("hello-lua.lua");
 		//redis-cli -a deepdata$ --eval lua-scripts/hello-lua.lua
 		Object result = jedis.eval(script);
 		System.out.println(result);
@@ -94,7 +92,7 @@ public class RedisLuaTest {
 	 */
 	@Test
 	public void testLuaKeyArgs() {
-		String script = IOUtils.readClassPathFile("key-arg.lua");
+		String script = IOUtils.readClassPathFileAsString("key-arg.lua");
 		Object result = jedis.eval(script, 2, "links:cursor", "links:url", "http://pims.mulberrylearning.cn");
 		System.out.println(result);
 	}
@@ -124,7 +122,7 @@ public class RedisLuaTest {
 	 */
 	@Test
 	public void testConditionalIncr() {
-		String script = IOUtils.readClassPathFile("condition-incr.lua");
+		String script = IOUtils.readClassPathFileAsString("condition-incr.lua");
 		Object result = jedis.eval(script, 1, "links:visits", "2");
 		System.out.println(result);
 	}
@@ -136,7 +134,7 @@ public class RedisLuaTest {
 	 */
 	@Test
 	public void testGetLuaSha1() {
-		String script = IOUtils.readClassPathFile("hello-lua.lua");
+		String script = IOUtils.readClassPathFileAsString("hello-lua.lua");
 		String result = jedis.scriptLoad(script);
 		System.out.println(result);
 		System.out.println(jedis.evalsha(result));
@@ -159,7 +157,7 @@ public class RedisLuaTest {
 		boolean exists = jedis.scriptExists(sha1);
 		if (!exists) {
 			System.out.println("脚本不存在");
-			String script = IOUtils.readClassPathFile("hello-lua.lua");
+			String script = IOUtils.readClassPathFileAsString("hello-lua.lua");
 			sha1 = jedis.scriptLoad(script);
 			/*
 			 * 脚本只要没改过，清除过后重新load进Redis， 它的sha1校验和是一样的
@@ -180,7 +178,7 @@ public class RedisLuaTest {
 	@Test
 	public void testCJson() {
 		jedis.set("apple", "{'color':'red', 'type':fruit}");
-		Object result = jedis.eval(IOUtils.readClassPathFile("cjson.lua"), 1, "apple", "type");
+		Object result = jedis.eval(IOUtils.readClassPathFileAsString("cjson.lua"), 1, "apple", "type");
 		System.out.println(result);
 	}
 }

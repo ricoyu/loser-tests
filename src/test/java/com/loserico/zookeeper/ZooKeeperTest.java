@@ -1,12 +1,6 @@
 package com.loserico.zookeeper;
 
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
-
-import java.io.IOException;
-import java.util.concurrent.CountDownLatch;
-
+import com.loserico.json.jackson.JacksonUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher.Event.KeeperState;
@@ -17,6 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.zookeeper.ZooDefs.Ids.OPEN_ACL_UNSAFE;
 
 public class ZooKeeperTest {
 	private static final Logger logger = LoggerFactory.getLogger(ZooKeeperTest.class);
@@ -81,7 +81,7 @@ public class ZooKeeperTest {
 		byte[] data = zookeeper.getData("/sishuok", false, stat);
 		String s = new String(data, UTF_8);
 		System.out.println(s);
-		System.out.println(toJson(stat));
+		System.out.println(JacksonUtils.toJson(stat));
 	}
 	
 	@Test
