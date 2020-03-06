@@ -22,4 +22,10 @@ public class StringReplace {
 		s = s.replace("\"", "\\\"");
 		System.out.println(s);
 	}
+	
+	@Test
+	public void testStringReplace2() {
+		String s = "rocketmq.namesrv";
+		System.out.println(s.replace("rocketmq.", ""));
+	}
 }

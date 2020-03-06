@@ -1,6 +1,7 @@
 package com.loserico.pattern.behavioral.memento1;
 
 public class Originator {
+	
 	private String state;
 
 	public void setState(String state) {

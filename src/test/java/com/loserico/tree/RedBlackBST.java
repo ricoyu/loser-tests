@@ -29,7 +29,7 @@ package com.loserico.tree; /****************************************************
 
 import com.loserico.io.StdIn;
 import com.loserico.io.StdOut;
-import com.loserico.queue.Queue;
+import com.loserico.concurrent.queue.Queue;
 
 import java.util.NoSuchElementException;
 
