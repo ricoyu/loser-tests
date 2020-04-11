@@ -1,11 +1,5 @@
 package com.loserico.zookeeper;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -22,18 +16,24 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 public class CuratorTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(CuratorTest.class);
 
-	private static final String CONN_STR = "192.168.1.103:2181";
+	private static final String CONN_STR = "localhost:2181";
 //	private static final String CONN_STR = "192.168.1.3:2181,192.168.1.4:2181,192.168.1.6:2181";
 
 	@Test
 	public void testCreateSession() {
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
 		CuratorFramework client = CuratorFrameworkFactory.newClient(
-				"192.168.1.103:2181",
+				CONN_STR,
 				5000,
 				3000,
 				retryPolicy);
@@ -65,14 +65,14 @@ public class CuratorTest {
 	@Test
 	public void testNamespace() {
 		CuratorFramework client = CuratorFrameworkFactory.builder()
-				.connectString("192.168.1.103:2181")
+				.connectString(CONN_STR)
 				.sessionTimeoutMs(60000)
 				.retryPolicy(new ExponentialBackoffRetry(1000, 3))
 				.namespace("namespace")
 				.build();
 		client.start();
 		try {
-			String result = client.create().forPath("/rico");
+			String result = client.create().forPath("/rico"); //真正路径是: namespace/rico
 			System.out.println(result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,7 +127,7 @@ public class CuratorTest {
 	 * 于是A机器创建的时候，可能会抛出诸如节点已经存在的异常。因此开发人员还必须对这些异常进行单独的处理，逻辑通常非常琐碎
 	 * 
 	 * EnsurePath正好可以用来解决这些烦人的问题，它采取静默的节点创建方式，其内部实现就是试图创建指定节点，如果节点已经存在，
-	 * 那么就不经心任何操作，也不对外抛出异常，否则正常创建数据节点
+	 * 那么就不进行任何操作，也不对外抛出异常，否则正常创建数据节点
 	 * 
 	 */
 	@Test
@@ -151,7 +151,7 @@ public class CuratorTest {
 				.connectString(CONN_STR)
 				.sessionTimeoutMs(60000)
 				.retryPolicy(new ExponentialBackoffRetry(1000, 3))
-				.namespace("namespace")
+				.namespace("curator-test")
 				.build();
 		client.start();
 		DistributedBarrier barrier = new DistributedBarrier(client, barrierPath);

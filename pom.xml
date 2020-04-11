@@ -30,6 +30,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.loserico</groupId>
+            <artifactId>loser-codec</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
         </dependency>
@@ -61,10 +66,10 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -123,7 +128,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-        
+
         <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
@@ -181,6 +186,12 @@
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-examples</artifactId>
             <version>4.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
@@ -218,6 +229,10 @@
             <version>8.4.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
 
         <!-- poi -->
         <dependency>
@@ -237,6 +252,28 @@
             <artifactId>loser-workbook</artifactId>
             <version>4.6.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+
+        <!-- =================== Redisson 依赖 =================== -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.12.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-epoll</artifactId>
+            <version>4.1.48.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- =================== Redisson 依赖 =================== -->
+        
     </dependencies>
 
 </project>

@@ -159,11 +159,21 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
         	//将itemOffSet处旧值替换为新值
             return UNSAFE.compareAndSwapObject(this, itemOffset, cmp, val);
         }
-
-        void lazySetNext(Node<E> val) {
+	
+	    /**
+	     * 更改Node中的指针域next
+	     * @param val
+	     */
+	    void lazySetNext(Node<E> val) {
             UNSAFE.putOrderedObject(this, nextOffset, val);
         }
-
+	
+	    /**
+	     * 更改Node中的指针域next
+	     * @param cmp
+	     * @param val
+	     * @return
+	     */
         boolean casNext(Node<E> cmp, Node<E> val) {
             return UNSAFE.compareAndSwapObject(this, nextOffset, cmp, val);
         }

@@ -1415,8 +1415,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 		if (workerCountOf(c) < corePoolSize) {
 			/*
 			 * core参数表示创建的是否是核心线程
-			 * addWorker中的第二个参数表示限制添加线程的数量是根据corePoolSize来判断还是maximumPoolSize来判断
-			 * 如果为true, 根据corePoolSize来判断
+			 * 同时可以判断添加线程的数量是根据corePoolSize来判断还是maximumPoolSize来判断
+			 * 如果为true,  根据corePoolSize来判断
 			 * 如果为false, 则根据maximumPoolSize来判断
 			 *
 			 * command就是实现了Runnable接口的类, 也就是你要交给线程池去执行的任务
