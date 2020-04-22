@@ -1,35 +1,24 @@
 package com.loserico.codec;
 
-import com.loserico.common.lang.utils.StringUtils;
 import org.junit.Test;
 
-/**
- * <p>
- * Copyright: (C), 2020/3/9 16:30
- * <p>
- * <p>
- * Company: Sexy Uncle Inc.
- *
- * @author Rico Yu ricoyu520@gmail.com
- * @version 1.0
- */
+import static org.junit.Assert.assertEquals;
+
 public class AesEncryptUtilsTest {
 	
 	@Test
-	public void testAes() {
-		String key = StringUtils.uniqueKey(16);
-		String uri = "uri=/zl.mt.basic.getbasicdatainfo/1.0.0/action&timestamp=123123123123&cookie=asdkasdihqqnds";
-		String encrypted = AesEncryptUtils.encrypt(uri, key);
-		System.out.println(encrypted);
+	public void testGenerateKey() {
+		String key = AesEncryptUtils.key();
+		System.out.println(key);
 	}
-	
+
 	@Test
-	public void testRsa() {
-		RsaUtils.RsaKeyPair rsaKeyPair = RsaUtils.initRSAKey(2048);
-		String uri = "uri=/zl.mt.basic.getbasicdatainfo/1.0.0/action&timestamp=123123123123&cookie=asdkasdihqqnds";
-		String encrypted = RsaUtils.publicEncrypt(uri, rsaKeyPair.publicKey());
-		System.out.println(encrypted);
-		String decrypted = RsaUtils.privateDecrypt(encrypted, rsaKeyPair.privateKey());
+	public void testJsEncryptJavaDecrypt() {
+		String key = "VkqnmlLM3zFXlyzv";
+		String encrypted = "sjKlu/pgQ7gy79KjWqKpb4lMmRp/6FaunjWLG2s2jN1fqwwp+LXAKqHN1XuKycQ7FLQNj5UKuR2qM3yszUWgm2cH1GbfP/PdPLsss2Ce3Ru93GxleLwlu/0208m+TCJEfRePWzkcoPp4gNdCHeTSZ+2D+2MSzAEqcOp/UOV+P5yVwnyplLTlKv+5FUyBbjFG";
+		String original = "uri=api/v1/resources&access_token=8B9OkolEY你好IFR807wLTLModwJJSypMMVVW2i3haoiWWBpSOLEoGqSZygtn4WYLyCQz8&timestamp=1534323558718";
+		String decrypted = AesEncryptUtils.decrypt(encrypted, key);
+		assertEquals(original, decrypted);
 		System.out.println(decrypted);
 	}
 }

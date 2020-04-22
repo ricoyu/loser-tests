@@ -273,7 +273,13 @@
             <scope>test</scope>
         </dependency>
         <!-- =================== Redisson 依赖 =================== -->
-        
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
