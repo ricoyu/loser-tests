@@ -10,7 +10,7 @@
         <groupId>com.loserico</groupId>
         <artifactId>sexy-uncle</artifactId>
         <relativePath>../sexy-uncle/pom.xml</relativePath>
-        <version>4.6.6</version>
+        <version>4.6.7</version>
     </parent>
 
     <dependencies>
@@ -32,6 +32,11 @@
         <dependency>
             <groupId>com.loserico</groupId>
             <artifactId>loser-codec</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.loserico</groupId>
+            <artifactId>loser-workbook</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -247,11 +252,6 @@
             <version>3.17</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.loserico</groupId>
-            <artifactId>loser-workbook</artifactId>
-            <version>4.6.6</version>
-        </dependency>
 
         <dependency>
             <groupId>com.alibaba.csp</groupId>
@@ -278,6 +278,27 @@
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JWT 依赖-->
+        <!--添加jwt相关的包-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.10.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.10.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.10.8</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
