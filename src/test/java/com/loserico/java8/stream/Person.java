@@ -42,4 +42,16 @@ public class Person {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+	
+	public int getNo() {
+		return no;
+	}
+	
+	public void setNo(int no) {
+		this.no = no;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 }

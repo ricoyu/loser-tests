@@ -1,6 +1,6 @@
 package com.loserico.bitop;
 
-import com.loserico.common.lang.utils.HexUtils;
+import com.loserico.codec.HexUtils;
 
 /**
  * <p>

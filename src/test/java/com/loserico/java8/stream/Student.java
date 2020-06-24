@@ -1,9 +1,9 @@
 package com.loserico.java8.stream;
 
+import com.loserico.json.jackson.JacksonUtils;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
 
 public class Student {
 
@@ -31,7 +31,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return toJson(this);
+		return JacksonUtils.toJson(this);
 	}
 
 }

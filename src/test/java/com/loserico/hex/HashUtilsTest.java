@@ -1,6 +1,6 @@
 package com.loserico.hex;
 
-import com.loserico.common.lang.utils.HexUtils;
+import com.loserico.codec.HexUtils;
 import org.junit.Test;
 
 /**

@@ -2,7 +2,7 @@ package com.loserico.java8.stream;
 
 import java.math.BigDecimal;
 
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
+import static com.loserico.json.jackson.JacksonUtils.toJson;
 
 public class Staff {
 

@@ -1,6 +1,6 @@
 package com.loserico.java8.lamd;
 
-import com.peacefish.orm.commons.enums.Gender;
+import com.loserico.common.lang.enums.Gender;
 
 import java.time.LocalDate;
 

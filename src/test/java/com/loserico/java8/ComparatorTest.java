@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
+import static com.loserico.json.jackson.JacksonUtils.toJson;
 import static java.util.Arrays.asList;
 
 /**

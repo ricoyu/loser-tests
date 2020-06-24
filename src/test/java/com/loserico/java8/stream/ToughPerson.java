@@ -1,6 +1,6 @@
 package com.loserico.java8.stream;
 
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
+import com.loserico.json.jackson.JacksonUtils;
 
 public class ToughPerson {
 
@@ -30,7 +30,7 @@ public class ToughPerson {
 
 	@Override
 	public String toString() {
-		return toJson(this);
+		return JacksonUtils.toJson(this);
 	}
 
 	

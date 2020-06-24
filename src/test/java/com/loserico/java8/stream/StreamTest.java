@@ -1,6 +1,5 @@
 package com.loserico.java8.stream;
 
-import com.loserico.commons.jackson.JacksonUtils;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -32,7 +31,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.loserico.commons.jackson.JacksonUtils.toJson;
+import static com.loserico.json.jackson.JacksonUtils.toJson;
 import static java.util.Arrays.asList;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.counting;
@@ -81,7 +80,6 @@ public class StreamTest {
                 .map(String::toUpperCase)
                 .peek(e -> System.out.println("Mapped value: " + e))
                 .collect(Collectors.toList());
-
     }
 
     @Test
@@ -734,7 +732,7 @@ public class StreamTest {
 
         //Java8的做法
         Map<String, List<Employee>> employeesByCity = employees.stream().collect(groupingBy(Employee::getCity));
-        System.out.println(JacksonUtils.toJson(employeesByCity));
+        System.out.println(toJson(employeesByCity));
 
         /*
          * It’s also possible to count the number of employees in each city,
@@ -771,7 +769,7 @@ public class StreamTest {
                 new Employee("Dorothy", "Hong Kong", 190));
         Map<Boolean, List<Employee>> partitioned = employees.stream()
                 .collect(Collectors.partitioningBy(employee -> employee.getSales() > 150));
-        System.out.println(JacksonUtils.toJson(partitioned));
+        System.out.println(toJson(partitioned));
 
         /*
          * You can also combine partitioning and grouping by passing a
@@ -974,7 +972,7 @@ public class StreamTest {
 
         @Override
         public String toString() {
-            return JacksonUtils.toJson(this);
+            return toJson(this);
         }
 
         public Item(String name, int qty, BigDecimal price) {

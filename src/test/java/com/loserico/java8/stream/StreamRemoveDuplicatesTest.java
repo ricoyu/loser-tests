@@ -1,6 +1,6 @@
 package com.loserico.java8.stream;
 
-import com.loserico.commons.jackson.JacksonUtils;
+import com.loserico.json.jackson.JacksonUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;

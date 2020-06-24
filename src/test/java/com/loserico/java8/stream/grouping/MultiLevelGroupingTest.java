@@ -1,8 +1,8 @@
 package com.loserico.java8.stream.grouping;
 
-import com.alibaba.fastjson.JSON;
 import com.loserico.java8.stream.grouping.model.Person;
 import com.loserico.java8.stream.grouping.model.Pet;
+import com.loserico.json.jackson.JacksonUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class MultiLevelGroupingTest {
 				.collect(groupingBy(
 						Person::getCity,
 						mapping(Person::getPet, toList())));
-		System.out.println(JSON.toJSONString(petsGroupedByCity, true));
+		System.out.println(JacksonUtils.toJson(petsGroupedByCity));
 		System.out.println("Pets living in New York: " + petsGroupedByCity.get("NYC"));
 	}
 

@@ -18,7 +18,6 @@ public class RandomTest2 {
     *
     */
     public static int[] randomNumber(int min,int max,int n){
-
         //判断是否已经达到索要输出随机数的个数
         if(n>(max-min+1) || max <min){
             return null;
