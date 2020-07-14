@@ -1,4 +1,4 @@
-package com.loserico.jvm;
+package com.loserico.jvm.oom;
 
 /**
  * VM参数: -verbose:gc -Xms20M -Xmx20m -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=8 -XX:+UseSerialGC
