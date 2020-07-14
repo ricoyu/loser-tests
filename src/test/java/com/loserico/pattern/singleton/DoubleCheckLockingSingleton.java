@@ -14,7 +14,7 @@ package com.loserico.pattern.singleton;
  */
 public class DoubleCheckLockingSingleton {
 	
-	private static DoubleCheckLockingSingleton instance;
+	private static volatile DoubleCheckLockingSingleton instance;
 
 	private DoubleCheckLockingSingleton() {
 	}
